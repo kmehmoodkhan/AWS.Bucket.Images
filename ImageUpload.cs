@@ -15,7 +15,6 @@ namespace AWS.Bucket.Images
 
     public class ImageUpload
     {
-        private const string bucketName = "trueagency-minotaur-production";
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.APSoutheast2;
 
         private string FileName = string.Empty;
@@ -43,8 +42,8 @@ namespace AWS.Bucket.Images
                 
                 var request = new GetBucketLocationRequest()
                 {
-                    BucketName = bucketName
-                };
+                    BucketName = ApplicationSettings.Bucket
+            };
                 GetBucketLocationResponse response = await client.GetBucketLocationAsync(request);
                 bucketLocation = response.Location.ToString();
                 
@@ -64,11 +63,11 @@ namespace AWS.Bucket.Images
             {
                 try
                 {
-                    if (!(await AmazonS3Util.DoesS3BucketExistAsync(client, bucketName)))
+                    if (!(await AmazonS3Util.DoesS3BucketExistAsync(client, ApplicationSettings.Bucket)))
                     {
                         var putBucketRequest = new PutBucketRequest
                         {
-                            BucketName = bucketName,
+                            BucketName = ApplicationSettings.Bucket,
                             UseClientRegion = true
                         };
 
@@ -89,7 +88,7 @@ namespace AWS.Bucket.Images
                 // 1. Put object-specify only key name for the new object.
                 var putRequest1 = new PutObjectRequest
                 {
-                    BucketName = bucketName,
+                    BucketName = ApplicationSettings.Bucket,
                     Key = FileName,
                     FilePath = FilePath,
                     ContentType = ContentType,/// "image/jpg",
@@ -99,7 +98,7 @@ namespace AWS.Bucket.Images
                 PutObjectResponse response1 = await client.PutObjectAsync(putRequest1);
 
                 GetPreSignedUrlRequest request = new GetPreSignedUrlRequest();
-                request.BucketName = bucketName;
+                request.BucketName = ApplicationSettings.Bucket;
                 request.Key = FileName;
                 request.Expires = DateTime.Now.AddYears(5);
                 request.Protocol = Protocol.HTTPS;

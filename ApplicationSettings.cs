@@ -63,5 +63,19 @@ namespace AWS.Bucket.Images
                 return connectionString; 
             }
         }
+
+        public static string Bucket
+        {
+            get
+            {
+                string bucket = string.Empty;
+
+                if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["Bucket"]))
+                {
+                    bucket = ConfigurationManager.AppSettings["Bucket"].ToString();
+                }
+                return bucket;
+            }
+        }
     }
 }

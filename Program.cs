@@ -19,6 +19,7 @@ namespace AWS.Bucket.Images
             catch(Exception ex)
             {
                 Console.WriteLine("Exception thrown::::" + ex.Message);
+                Console.ReadLine();
             }
         }
     }
