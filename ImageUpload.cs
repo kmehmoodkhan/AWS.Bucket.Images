@@ -23,10 +23,10 @@ namespace AWS.Bucket.Images
 
         private static IAmazonS3 client;
 
-        public string UploadImage(string filePath)
+        public string UploadImage(string filePath,int recordId)
         {
             var fileInfo = new FileInfo(filePath);
-            FileName = fileInfo.Name;
+            FileName = recordId.ToString()+"-"+fileInfo.Name;
             FilePath = filePath;
             ContentType = Utility.GetMIMEType(FileName);
             client = new AmazonS3Client(ApplicationSettings.AccessKey, ApplicationSettings.SecreteKey, bucketRegion);

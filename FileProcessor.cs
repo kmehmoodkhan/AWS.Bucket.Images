@@ -45,12 +45,19 @@ namespace AWS.Bucket.Images
                                 fileName += "\\"+tempFileName;
                             }
 
-
-
-                            string url = image.UploadImage(fileName);
-                            url = ModifyUrl(url);
-                            AddRecord(Path.GetFileName(fileName), fileName, recordId, url);
-
+                            try
+                            {
+                                if (File.Exists(fileName))
+                                {
+                                    string url = image.UploadImage(fileName,recordId);
+                                    url = ModifyUrl(url);
+                                    AddRecord(Path.GetFileName(fileName), fileName, recordId, url);
+                                }
+                            }
+                            catch(Exception ex)
+                            {
+                                ;
+                            }
                         }
                     }
                     catch (Exception ex)
